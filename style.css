@@ -11,15 +11,68 @@
     font-family: Arial, Helvetica, sans-serif;  
 }
 
+html, body{
+    min-height: 100vh;
+    /* fallback universal */
+    min-height: 100svh;
+    /* Safari/iOS: viewport “pequena” estável */
+    min-height: 100dvh;
+    /* modernos: viewport dinâmica (ajusta com barra) */
+    overflow-x: hidden;
+    width: 100%;
+}
+
 body{
-    display: grid;
-    place-content: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .container{
-    padding: 20px;
-    border: 2px solid var(--azul);
+    border: 1px solid var(--azul);
     border-radius: 10px;
-    width: 400px;
-    background-color: ;
+    min-width: 400px;
+    max-width: 700px;
+    display: flex;
+    flex-flow: column nowrap;
+    margin: 0 20px;
+    box-shadow: 5px 5px 20px rgba(168, 166, 166, 0.646);
+}
+
+header{
+    text-align: center;
+    background-color: var(--azul);
+    width: 100%;
+    border-radius: 10px 10px 0 0;
+    padding: 10px;
+    color: rgb(219, 218, 218);
+}
+
+header h1{
+    font-size: 1.8em;
+}
+
+form{
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 15px;
+}
+
+select, input, fieldset, div.campo{
+    margin: 8px 8px 0 0;
+}
+
+select, input{
+    border: 0.5px solid rgb(99, 98, 98);
+    padding: 3px;
+}
+
+fieldset{
+    padding: 5px;
+}
+
+input.botao{
+    padding: 5px;
 }
