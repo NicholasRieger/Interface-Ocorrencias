@@ -1,0 +1,25 @@
+:root{
+    --verde: #3AB44B;
+    --azul: #0056A0;
+    --laranja: #DE6023;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;  
+}
+
+body{
+    display: grid;
+    place-content: center;
+}
+
+.container{
+    padding: 20px;
+    border: 2px solid var(--azul);
+    border-radius: 10px;
+    width: 400px;
+    background-color: ;
+}
