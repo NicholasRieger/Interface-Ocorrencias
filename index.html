@@ -2,188 +2,187 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Relatório de Ocorrências</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
+  <header class="topbar">
     <div class="container">
-        <header>
-            <h1>Relatório de Ocorrências</h1>
-            <p>Preencha os dados para gerar o relatório</p>
-        </header>
-        <form action="#" method="post">
-            <div class="campo">
-                <label for="iturma">Turma *</label><br>
-                <select name="turma" id="iturma" required>
-                    <option value="" disabled selected>Selecionar turma...</option>
-                    <!--Colocar a cor da fonte do Selecionar cinza-->
-                    <!-- FUND I -->
-                    <optgroup label="Fund I">
-                        <!-- 2º ano -->
-                        <option value="2 EFA">2 EFA</option>
-                        <option value="2 EFB">2 EFB</option>
-                        <option value="2 EFC">2 EFC</option>
-                        <option value="2 EFD">2 EFD</option>
-                        <option value="2 EFE">2 EFE</option>
-                        <option value="2 EFF">2 EFF</option>
-                        <!-- 3º ano -->
-                        <option value="3 EFA">3 EFA</option>
-                        <option value="3 EFB">3 EFB</option>
-                        <option value="3 EFC">3 EFC</option>
-                        <option value="3 EFD">3 EFD</option>
-                        <option value="3 EFE">3 EFE</option>
-                        <option value="3 EFF">3 EFF</option>
-                        <option value="3 EFG">3 EFG</option>
-                        <!-- 4º ano -->
-                        <option value="4 EFA">4 EFA</option>
-                        <option value="4 EFB">4 EFB</option>
-                        <option value="4 EFC">4 EFC</option>
-                        <option value="4 EFD">4 EFD</option>
-                        <option value="4 EFE">4 EFE</option>
-                        <option value="4 EFF">4 EFF</option>
-                        <option value="4 EFG">4 EFG</option>
-                        <option value="4 EFH">4 EFH</option>
-                        <!-- 5º ano -->
-                        <option value="5 EFA">5 EFA</option>
-                        <option value="5 EFB">5 EFB</option>
-                        <option value="5 EFC">5 EFC</option>
-                        <option value="5 EFD">5 EFD</option>
-                        <option value="5 EFE">5 EFE</option>
-                        <option value="5 EFF">5 EFF</option>
-                        <option value="5 EFG">5 EFG</option>
-                        <option value="5 EFH">5 EFH</option>
-                    </optgroup>
-                    <!-- FUND II -->
-                    <optgroup label="Fund II">
-                        <!-- 6º ano -->
-                        <option value="6 A">6 A</option>
-                        <option value="6 B">6 B</option>
-                        <option value="6 C">6 C</option>
-                        <option value="6 D">6 D</option>
-                        <option value="6 E">6 E</option>
-                        <option value="6 F">6 F</option>
-                        <option value="6 G">6 G</option>
-                        <option value="6 H">6 H</option>
-                        <option value="6 I">6 I</option>
-                        <!-- 7º ano -->
-                        <option value="7 A">7 A</option>
-                        <option value="7 B">7 B</option>
-                        <option value="7 C">7 C</option>
-                        <option value="7 D">7 D</option>
-                        <option value="7 E">7 E</option>
-                        <option value="7 F">7 F</option>
-                        <option value="7 G">7 G</option>
-                        <option value="7 H">7 H</option>
-                        <!-- 8º ano -->
-                        <option value="8 A">8 A</option>
-                        <option value="8 B">8 B</option>
-                        <option value="8 C">8 C</option>
-                        <option value="8 D">8 D</option>
-                        <option value="8 E">8 E</option>
-                        <option value="8 F">8 F</option>
-                        <option value="8 G">8 G</option>
-                        <!-- 9º ano -->
-                        <option value="9 A">9 A</option>
-                        <option value="9 B">9 B</option>
-                        <option value="9 C">9 C</option>
-                        <option value="9 D">9 D</option>
-                        <option value="9 E">9 E</option>
-                        <option value="9 F">9 F</option>
-                        <option value="9 G">9 G</option>
-                        <option value="9 H">9 H</option>
-                    </optgroup>
-                    <!-- ENSINO MÉDIO -->
-                    <optgroup label="Ensino Médio">
-                        <!-- 1º ano -->
-                        <option value="1 A">1 A</option>
-                        <option value="1 B">1 B</option>
-                        <option value="1 C">1 C</option>
-                        <option value="1 D">1 D</option>
-                        <option value="1 E">1 E</option>
-                        <option value="1 F">1 F</option>
-                        <option value="1 G">1 G</option>
-                        <!-- 2º ano -->
-                        <option value="2 A">2 A</option>
-                        <option value="2 B">2 B</option>
-                        <option value="2 C">2 C</option>
-                        <option value="2 D">2 D</option>
-                        <option value="2 E">2 E</option>
-                        <!-- 3º ano -->
-                        <option value="3 A">3 A</option>
-                        <option value="3 B">3 B</option>
-                        <option value="3 C">3 C</option>
-                        <option value="3 D">3 D</option>
-                        <option value="3 E">3 E</option>
-                    </optgroup>
-                </select>
-            </div>
-            <div>
-                <label for="inome">Nome do aluno (opcional)</label><br>
-                <input type="text" name="nome" id="inome">
-            </div>
-            <div class="campo">
-                <label for="iocorrencia">Ocorrência</label>
-                <select name="ocorrencia" id="iocorrencia" required>
-                    <option value="" disabled selected>Selecionar ocorrência...</option>
-                    <option value="Sem Lição de Casa">Sem Lição de Casa</option>
-                    <option value="Convocação para recuperação">Convocação para recuperação</option>
-                    <option value="Orientação ao aluno quanto a sua conversa">Orientação ao aluno quanto a sua conversa
-                    </option>
-                    <option value="Atraso na troca de aula">Atraso na troca de aula</option>
-                    <option value="Não realizou atividade em sala">Não realizou atividade em sala</option>
-                    <option value="Ocorrência pedagógica">Ocorrência pedagógica</option>
-                    <option value="Retira da sala por indisciplina">Retira da sala por indisciplina</option>
-                    <option value="Sem material">Sem material</option>
-                    <option value="Sem uniforme">Sem uniforme</option>
-                    <option value="Suspensão">Suspensão</option>
-                    <option value="Retirada de sala por falta de lição de casa">Retirada de sala por falta de lição de casa
-                    </option>
-                    <option value="Excelente participação">Excelente participação</option>
-                    <option value="Lição Incompleta">Lição Incompleta</option>
-                    <option value="Comportamento inadequado em sala">Comportamento inadequado em sala</option>
-                    <option value="Não entregou atividade avaliativa">Não entregou atividade avaliativa</option>
-                    <option value="Material Incompleto">Material Incompleto</option>
-                    <option value="Sem livro paradidático na aula de Leitura">Sem livro paradidático na aula de Leitura
-                    </option>
-                    <option value="Ausência em dia de atividade avaliativa">Ausência em dia de atividade avaliativa</option>
-                    <option value="Recusa de participação em atividade de classe">Recusa de participação em atividade de
-                        classe</option>
-                    <option value="Enfermaria">Enfermaria</option>
-                    <option value="Sem avental/ laboratório">Sem avental/ laboratório</option>
-                    <option value="Conversa em momento inadequado">Conversa em momento inadequado</option>
-                    <option value="Uso de celular durante a aula.">Uso de celular durante a aula.</option>
-                    <option value="Orientação de estudos">Orientação de estudos</option>
-                    <option value="Convocação para participação no Núcleo de Apoio">Convocação para participação no Núcleo
-                        de Apoio</option>
-                    <option value="Postura inadequada">Postura inadequada</option>
-                    <option value="Elogio: Boa iniciativa">Elogio: Boa iniciativa</option>
-                    <option value="Elogio: Boa participação">Elogio: Boa participação</option>
-                    <option value="Elogio: Grande dedicação">Elogio: Grande dedicação</option>
-                    <option value="Elogio: Melhora no Rendimento">Elogio: Melhora no Rendimento</option>
-                    <option value="Elogio: Tirar dúvidas">Elogio: Tirar dúvidas</option>
-                    <option value="Não realizou Atividade de Aula">Não realizou Atividade de Aula</option>
-                    <option value="Calçado fora dos padrões indicados pelo regimento">Calçado fora dos padrões indicados
-                        pelo regimento</option>
-                    <option value="Uniforme fora dos padrões indicados pelo regimento">Uniforme fora dos padrões indicados
-                        pelo regimento</option>
-                    <option value="Não seguir o mapeamento de sala">Não seguir o mapeamento de sala</option>
-                    <option value="Aluno não encaminhou o aparelho para a caixa">Aluno não encaminhou o aparelho para a
-                        caixa</option>
-                </select>
-            </div>
-            <fieldset>
-                <legend>Período</legend>
-                <label for="data-inicio">De</label>
-                <input type="date" name="periodo_inicio" id="data-inicio" required>
-                <label for="data-fim">Até</label>
-                <input type="date" name="periodo-fim" id="data-fim" required>
-            </fieldset>
-            <input type="submit" value="Gerar relatório" class="botao">
-        </form>
+      <h1>Relatório de Ocorrências</h1>
+      <p class="subtitle">Selecione os filtros e exporte o XLSX</p>
     </div>
+  </header>
+
+  <main class="container">
+    <form id="filtros" class="card" autocomplete="off">
+      <div class="grid-2">
+        <div class="field">
+          <label class="label" for="turmas">Turmas *</label>
+          <small class="hint">Use <b>CTRL</b> (Windows) ou <b>⌘</b> (Mac) para selecionar várias.</small>
+          <select id="turmas" name="turmas" multiple required size="14" class="control">
+            <!-- FUNDAMENTAL I -->
+            <optgroup label="Fundamental I">
+              <!-- 2º ano EF -->
+              <option>2EFA</option>
+              <option>2EFB</option>
+              <option>2EFC</option>
+              <option>2EFD</option>
+              <option>2EFE</option>
+              <option>2EFF</option>
+              <!-- 3º ano EF -->
+              <option>3EFA</option>
+              <option>3EFB</option>
+              <option>3EFC</option>
+              <option>3EFD</option>
+              <option>3EFE</option>
+              <option>3EFF</option>
+              <option>3EFG</option>
+              <!-- 4º ano EF -->
+              <option>4EFA</option>
+              <option>4EFB</option>
+              <option>4EFC</option>
+              <option>4EFD</option>
+              <option>4EFE</option>
+              <option>4EFF</option>
+              <option>4EFG</option>
+              <option>4EFH</option>
+              <!-- 5º ano EF -->
+              <option>5EFA</option>
+              <option>5EFB</option>
+              <option>5EFC</option>
+              <option>5EFD</option>
+              <option>5EFE</option>
+              <option>5EFF</option>
+              <option>5EFG</option>
+              <option>5EFH</option>
+            </optgroup>
+
+            <!-- FUNDAMENTAL II -->
+            <optgroup label="Fundamental II">
+              <!-- 6º ano -->
+              <option>6 A</option>
+              <option>6 B</option>
+              <option>6 C</option>
+              <option>6 D</option>
+              <option>6 E</option>
+              <option>6 F</option>
+              <option>6 G</option>
+              <option>6 H</option>
+              <option>6 I</option>
+              <!-- 7º ano -->
+              <option>7 A</option>
+              <option>7 B</option>
+              <option>7 C</option>
+              <option>7 D</option>
+              <option>7 E</option>
+              <option>7 F</option>
+              <option>7 G</option>
+              <option>7 H</option>
+              <!-- 8º ano -->
+              <option>8 A</option>
+              <option>8 B</option>
+              <option>8 C</option>
+              <option>8 D</option>
+              <option>8 E</option>
+              <option>8 F</option>
+              <option>8 G</option>
+              <!-- 9º ano -->
+              <option>9 A</option>
+              <option>9 B</option>
+              <option>9 C</option>
+              <option>9 D</option>
+              <option>9 E</option>
+              <option>9 F</option>
+              <option>9 G</option>
+              <option>9 H</option>
+            </optgroup>
+
+            <!-- ENSINO MÉDIO -->
+            <optgroup label="Ensino Médio">
+              <!-- 1ª série EM -->
+              <option>1 A</option>
+              <option>1 B</option>
+              <option>1 C</option>
+              <option>1 D</option>
+              <option>1 E</option>
+              <option>1 F</option>
+              <option>1 G</option>
+              <!-- 2ª série EM -->
+              <option>2 A</option>
+              <option>2 B</option>
+              <option>2 C</option>
+              <option>2 D</option>
+              <option>2 E</option>
+              <!-- 3ª série EM -->
+              <option>3 A</option>
+              <option>3 B</option>
+              <option>3 C</option>
+              <option>3 D</option>
+              <option>3 E</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <div class="field">
+          <label class="label" for="ocorrencias">Ocorrências *</label>
+          <small class="hint">Pode selecionar uma ou várias.</small>
+          <select id="ocorrencias" name="ocorrencias" multiple required size="14" class="control">
+            <option>Sem Lição de Casa</option>
+            <option>Convocação para recuperação</option>
+            <option>Orientação ao aluno quanto a sua conversa</option>
+            <option>Atraso na troca de aula</option>
+            <option>Não realizou atividade em sala</option>
+            <option>Ocorrência pedagógica</option>
+            <option>Retira da sala por indisciplina</option>
+            <option>Sem material</option>
+            <option>Sem uniforme</option>
+            <option>Suspensão</option>
+            <option>Retirada de sala por falta de lição de casa</option>
+            <option>Excelente participação</option>
+            <option>Lição Incompleta</option>
+            <option>Comportamento inadequado em sala</option>
+            <option>Não entregou atividade avaliativa</option>
+            <option>Material Incompleto</option>
+            <option>Sem livro paradidático na aula de Leitura</option>
+            <option>Saída para atendimento</option>
+            <option>Conversas paralelas</option>
+            <option>Esqueceu material</option>
+            <option>Esqueceu atividade</option>
+            <option>Uso de celular em aula</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="field">
+          <label class="label" for="data-inicio">Período – De *</label>
+          <input id="data-inicio" name="data_inicio" type="date" class="control" required />
+        </div>
+        <div class="field">
+          <label class="label" for="data-fim">Até *</label>
+          <input id="data-fim" name="data_fim" type="date" class="control" required />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="exportar" class="btn btn-primary" disabled>Exportar XLSX</button>
+        <span id="status" class="status" aria-live="polite"></span>
+      </div>
+    </form>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <small>Relatório de Ocorrências • Feito para agilizar seu dia a dia</small>
+    </div>
+  </footer>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+
 </body>
 
 </html>
