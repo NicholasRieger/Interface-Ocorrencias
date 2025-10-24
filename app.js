@@ -1,165 +1,160 @@
 // ===================================================================
-// app.js - Front para Relatório de Ocorrências
+// app.js - Relatório de Ocorrências (compatível com seus IDs antigos)
+// IDs esperados no HTML:
+//   #turmas, #ocorrencias, #data-inicio, #data-fim, #exportar, #status
 // ===================================================================
 
-// 1) Base da API (vem do config.js). Em dev local, usa 127.0.0.1:5000 se não setado
-const API_BASE = (window.API_BASE || "http://127.0.0.1:5000").replace(/\/$/, "");
+// Base da API: se existir window.API_BASE (ex.: https://sua-api.onrender.com) usa;
+// caso contrário, usa caminho relativo (/api/...), ideal p/ backend+front juntos.
+const API_BASE = (window.API_BASE ?? "").replace(/\/$/, "");
 
-// 2) Elementos
-const $turmas      = document.getElementById("turmas");
-const $ocorrencias = document.getElementById("ocorrencias");
-const $dataInicio  = document.getElementById("dataInicio");
-const $dataFim     = document.getElementById("dataFim");
-const $btnCSV      = document.getElementById("btnExportarCSV");
-const $btnXLSX     = document.getElementById("btnExportarXLSX");
-const $msg         = document.getElementById("msg");
+// Helpers DOM
+const $ = (sel) => document.querySelector(sel);
 
-// --- habilita botões caso venham com disabled no HTML
-(function enableButtonsOnLoad() {
-  [$btnCSV, $btnXLSX].forEach(b => { if (b) b.removeAttribute("disabled"); });
-})();
+// Elementos (mantendo os MESMOS IDs que você usava)
+const turmasEl = $("#turmas");
+const ocorsEl  = $("#ocorrencias");
+const dIniEl   = $("#data-inicio");
+const dFimEl   = $("#data-fim");
+const btn      = $("#exportar");
+const statusEl = $("#status");
 
-// 3) Utilidades
-function setMsg(texto, tipo = "info") {
-  if (!$msg) return;
-  $msg.textContent = texto || "";
-  $msg.className = "";
-  if (texto) $msg.classList.add(tipo === "erro" ? "msg-erro" : "msg-ok");
-}
-
-function selectedValues(selectEl) {
-  if (!selectEl) return [];
-  return Array.from(selectEl.selectedOptions || [])
+// ------- Utilitários -------
+const valMulti = (sel) =>
+  Array.from(sel?.selectedOptions || [])
     .map(o => (o.value ?? "").trim())
     .filter(Boolean);
-}
 
-function selectedDataAttr(selectEl, attr) {
-  if (!selectEl) return [];
-  const key = (attr || "cod");
-  return Array.from(selectEl.selectedOptions || [])
-    .map(o => (o.dataset && o.dataset[key]) ? String(o.dataset[key]).trim() : "")
+// Lê data-cod (se você tiver <option data-cod="123">)
+const valMultiData = (sel, attr = "cod") =>
+  Array.from(sel?.selectedOptions || [])
+    .map(o => (o.dataset?.[attr] ?? "").toString().trim())
     .filter(Boolean);
+
+// datas vêm como yyyy-mm-dd do <input type="date">
+const fmtDate = (inp) => (inp?.value || "").trim();
+
+// Validação: habilita/desabilita o botão
+const validate = () => {
+  const ok =
+    valMulti(turmasEl).length > 0 &&
+    valMulti(ocorsEl).length  > 0 &&
+    !!dIniEl?.value &&
+    !!dFimEl?.value;
+
+  if (btn) btn.disabled = !ok;
+  return ok;
+};
+
+// Datas padrão: últimos 30 dias
+(function setDefaultDates() {
+  if (!dIniEl || !dFimEl) return;
+  const today = new Date();
+  const past  = new Date();
+  past.setDate(today.getDate() - 30);
+  const toIso = (d) => d.toISOString().slice(0, 10);
+  if (!dIniEl.value) dIniEl.value = toIso(past);
+  if (!dFimEl.value) dFimEl.value = toIso(today);
+})();
+
+// Revalida ao mexer nos campos
+["change","input"].forEach(ev => {
+  [turmasEl, ocorsEl, dIniEl, dFimEl].forEach(el => el && el.addEventListener(ev, validate));
+});
+validate();
+
+// Mensagens
+function setStatus(txt) {
+  if (!statusEl) return;
+  statusEl.textContent = txt || "";
 }
 
-function readISODate(inputEl) {
-  if (!inputEl) return "";
-  return (inputEl.value || "").trim();
-}
-
-function downloadBlob(blob, filenameFallback) {
+// Faz download de Blob com nome
+function downloadBlob(blob, filename) {
   const a = document.createElement("a");
   const url = URL.createObjectURL(blob);
   a.href = url;
-  a.download = filenameFallback;
+  a.download = filename;
   document.body.appendChild(a);
   a.click();
   a.remove();
   URL.revokeObjectURL(url);
 }
 
+// Tenta pegar filename do header Content-Disposition
 function getFilenameFromDisposition(resp) {
   const cd = resp.headers.get("Content-Disposition") || resp.headers.get("content-disposition");
   if (!cd) return null;
   const m = cd.match(/filename\*=UTF-8''([^;]+)|filename="?([^"]+)"?/i);
   if (!m) return null;
-  return decodeURIComponent(m[1] || m[2] || "").replace(/\s+/g, " ").trim();
+  try {
+    return decodeURIComponent(m[1] || m[2] || "").trim();
+  } catch {
+    return (m[1] || m[2] || "").trim();
+  }
 }
 
-function validarFiltro() {
-  const turmas = selectedValues($turmas);
-  const tipos  = selectedValues($ocorrencias);
-  const di     = readISODate($dataInicio);
-  const df     = readISODate($dataFim);
+// Exportar XLSX (usa o endpoint novo do backend)
+async function exportarXLSX() {
+  if (!validate()) return;
 
-  if (!turmas.length) throw new Error("Selecione ao menos 1 turma.");
-  if (!tipos.length)  throw new Error("Selecione ao menos 1 tipo de ocorrência.");
-  if (!di || !df)     throw new Error("Informe as datas (início e fim).");
-  if (di > df)        throw new Error("A data inicial não pode ser maior que a final.");
-}
+  const turmas = valMulti(turmasEl);
+  const turmasCod = valMultiData(turmasEl, "cod"); // só será enviado se existir data-cod
+  const ocors  = valMulti(ocorsEl);
+  const di     = fmtDate(dIniEl);
+  const df     = fmtDate(dFimEl);
 
-function montarQueryString() {
-  const turmas     = selectedValues($turmas);
-  const turmasCod  = selectedDataAttr($turmas, "cod"); // se existir data-cod no <option>
-  const tipos      = selectedValues($ocorrencias);
-  const di         = readISODate($dataInicio);
-  const df         = readISODate($dataFim);
-
+  // Monta a query exatamente como o backend espera
   const qs = new URLSearchParams();
   turmas.forEach(t => qs.append("turmas", t));
   if (turmasCod.length) turmasCod.forEach(c => qs.append("turmas_cod", c));
-  tipos.forEach(o => qs.append("ocorrencias", o));
-  qs.set("data_inicio", di);
-  qs.set("data_fim", df);
+  ocors.forEach(o => qs.append("ocorrencias", o));
+  qs.append("data_inicio", di);
+  qs.append("data_fim", df);
 
-  return qs;
-}
+  // Se API_BASE estiver vazio -> "/api/..." (relativo). Se não, "https://.../api/..."
+  const url = `${API_BASE}/api/ocorrencias/xlsx_pivot?${qs.toString()}`;
 
-function setBusy(b) {
-  [$btnCSV, $btnXLSX].forEach(btn => { if (btn) btn.disabled = !!b; });
-}
-
-// 4) Exportações
-async function exportar(endpoint, nomeFallbackExt) {
-  try {
-    setMsg("");
-    validarFiltro();
-  } catch (e) {
-    setMsg(e.message || "Preencha os filtros corretamente.", "erro");
-    return;
-  }
-
-  const qs = montarQueryString();
-  const url = `${API_BASE}${endpoint}?${qs.toString()}`;
+  if (btn) btn.disabled = true;
+  setStatus("Gerando XLSX…");
 
   try {
-    setBusy(true);
-    setMsg("Gerando arquivo…");
-
-    const resp = await fetch(url, { method: "GET" });
-    if (!resp.ok) {
-      const txt = await resp.text().catch(() => "");
-      throw new Error(`Erro ao gerar arquivo (${resp.status}). ${txt || ""}`.trim());
+    const res = await fetch(url, { method: "GET" });
+    if (!res.ok) {
+      const txt = await res.text().catch(() => "");
+      throw new Error(`Erro ao gerar XLSX (${res.status}). ${txt || ""}`);
     }
 
-    const blob = await resp.blob();
-    const di = readISODate($dataInicio);
-    const df = readISODate($dataFim);
-    const fallback = `ocorrencias_pivot_${di}_a_${df}.${nomeFallbackExt}`;
+    const blob = await res.blob();
+    // tenta pegar nome do header, senão monta fallback
+    let fname = getFilenameFromDisposition(res);
+    if (!fname) {
+      const diLabel = di.replaceAll("-", "_");
+      const dfLabel = df.replaceAll("-", "_");
+      fname = `relatorio_ocorrencias_${diLabel}_a_${dfLabel}.xlsx`;
+    }
 
-    const fname = getFilenameFromDisposition(resp) || fallback;
     downloadBlob(blob, fname);
-    setMsg("Arquivo gerado com sucesso! ✓");
+    setStatus("Arquivo gerado com sucesso ✨");
   } catch (err) {
     console.error(err);
-    setMsg(err.message || "Falha ao gerar arquivo.", "erro");
+    setStatus(err.message || "Falha ao gerar XLSX.");
   } finally {
-    setBusy(false);
+    if (btn) btn.disabled = !validate();
+    setTimeout(() => { if (statusEl?.textContent?.startsWith("Arquivo")) setStatus(""); }, 2500);
   }
 }
 
-// 5) Eventos
-if ($btnCSV) {
-  $btnCSV.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    exportar("/api/ocorrencias/csv_pivot", "csv");
-  });
-}
-if ($btnXLSX) {
-  $btnXLSX.addEventListener("click", (ev) => {
-    ev.preventDefault();
-    exportar("/api/ocorrencias/xlsx_pivot", "xlsx");
-  });
-}
+// Clique do botão (mesmo ID antigo)
+if (btn) btn.addEventListener("click", exportarXLSX);
 
-// 6) Ping (diagnóstico)
-(async function bootstrap() {
+// Ping inicial (útil p/ identificar CORS/URL errada no console)
+(async function ping() {
   try {
-    const r = await fetch(`${API_BASE}/api/ping`, { method: "GET" });
+    const r = await fetch(`${API_BASE}/api/ping`);
     if (!r.ok) throw new Error(`Ping falhou (${r.status})`);
-    console.log("[OK] API acessível em:", API_BASE);
+    console.log("[OK] API acessível em:", API_BASE || "(caminho relativo)");
   } catch (e) {
-    console.warn("[ATENÇÃO] Não foi possível acessar a API em:", API_BASE, e);
-    setMsg("Não foi possível acessar a API. Verifique a URL no config.js.", "erro");
+    console.warn("[ATENÇÃO] Não foi possível acessar a API em:", API_BASE || "(relativo)", e);
   }
 })();

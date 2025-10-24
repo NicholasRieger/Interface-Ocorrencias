@@ -1,1 +1,0 @@
-window.API_BASE = "https://ocorrencias-api-i9or.onrender.com";
